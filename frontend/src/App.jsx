@@ -46,7 +46,7 @@ export default function App() {
     } catch (err) {
       alert(err);
     }
-  }, [handleSubmit]);
+  }, []);
 
   return (
     <>
