@@ -25,7 +25,7 @@ export default function App() {
       );
       alert(response.data.message);
     } catch (err) {
-      alert("Error:", err.response?.data || err.message);
+      alert("Error:", err.response.data || err.message);
     }
   };
 
