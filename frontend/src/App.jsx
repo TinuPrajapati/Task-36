@@ -25,7 +25,7 @@ export default function App() {
           withCredentials:true
         }
       );
-      if(response.data === 0) alert("unable to send data")
+      if(response.data === 0) return alert("unable to send data")
       alert(response.data.message);
       window.location.reload(false)
     } catch (err) {
