@@ -10,8 +10,8 @@ const Display = ({ images }) => {
         {images.map((image, index) => (
           <img
             src={image.url}
-            alt=""
-            key={image._id}
+            alt="no image"
+            key={index}
             className="w-full bg-sky-500 h-full rounded-md"
           />
         ))}
