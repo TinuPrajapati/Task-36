@@ -9,7 +9,12 @@ import Image from "./models/imageModel.js";
 const upload = multer({ storage})
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.frontend_url,
+  methods: ["GET", "POST"],
+  credentials:true,
+  allowedHeaders: "Content-Type,Authorization",
+}));
 
 // Use the body-parsers *after* multer to avoid interference with form-data
 app.use(express.urlencoded({ extended: true }));
