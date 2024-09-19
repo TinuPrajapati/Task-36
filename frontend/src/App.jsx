@@ -25,6 +25,7 @@ export default function App() {
           withCredentials:true
         }
       );
+      if(response.data === 0) alert("unable to send data")
       alert(response.data.message);
     } catch (err) {
       console.log(err)

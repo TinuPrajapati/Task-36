@@ -40,7 +40,8 @@ app.get("/", (req, res) => {
 
 // File Upload Route
 app.post("/upload", upload.single("image"), (req, res) => {
-  const {path} =req.file
+  try{
+    const {path} =req.file
   if (!req.file) {
     return res.status(400).json({ message: "No Image Provided" });
   }
@@ -49,6 +50,9 @@ app.post("/upload", upload.single("image"), (req, res) => {
   });
   data.save();  
   res.json({ message: "File uploaded successfully" });
+  }catch(err){
+    res.json(0)
+  }
 });
 
 app.get("/show",async (req,res)=>{
