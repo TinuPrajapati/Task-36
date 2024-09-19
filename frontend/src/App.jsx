@@ -20,7 +20,9 @@ export default function App() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            
           },
+          withCredentials:true
         }
       );
       alert(response.data.message);
@@ -33,7 +35,9 @@ export default function App() {
     try {
       async function getData() {
         const response = await axios.get(
-          `${import.meta.env.VITE_APP_Backend_url}/show`
+          `${import.meta.env.VITE_APP_Backend_url}/show`,{
+            withCredentials:true
+          }
         );
         setImages(response.data);
       }
