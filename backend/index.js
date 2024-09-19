@@ -10,7 +10,7 @@ const upload = multer({ storage})
 const app = express();
 
 app.use(cors({
-  origin: process.env.frontend_url,
+  origin: 'https://task-36-frontend.vercel.app',
   methods: ["GET", "POST"],
   credentials:true,
   allowedHeaders: "Content-Type,Authorization",
