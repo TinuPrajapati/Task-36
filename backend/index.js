@@ -12,7 +12,8 @@ const app = express();
 app.use(cors({
   origin: 'https://task-36-frontend.vercel.app',
   methods: ["GET", "POST"],
-  credentials:true
+  credentials:true,
+  allowedHeaders: "Content-Type,Authorization",
 }));
 
 // Use the body-parsers *after* multer to avoid interference with form-data
