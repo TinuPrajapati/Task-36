@@ -1,19 +1,17 @@
 import React from "react";
+import Image from "./Image";
+import Loader from "./Loader";
 
-const Display = ({ images }) => {
+const Display = ({ images,handleDelete,loading }) => {
   return (
-    <div className="w-[70%] h-full bg-white rounded-lg shadow-lg p-4 flex flex-col items-center gap-4">
-      <h1 className="text-2xl font-serif border-b-2 border-sky-500 ">
+    <div className="bg-white rounded-md border-4 border-custom2 shadow-lg flex flex-col items-center gap-2 p-2 w-[90%] h-full lg:w-[70%] lg:h-full lg:p-4 lg:gap-4">
+      {loading && <Loader/>}
+      <h1 className="text-xl lg:text-2xl">
         Upload Images
       </h1>
-      <div className="w-full h-[95%]  grid grid-cols-4 grid-rows-3 gap-4">
+      <div className="w-full flex flex-col items-center gap-4 md:grid-cols-2 lg:h-[90%] lg:grid lg:grid-cols-3 lg:grid-rows-2">
         {images.map((image, index) => (
-          <img
-            src={image.url}
-            alt="no image"
-            key={index}
-            className="w-full bg-sky-500 h-full rounded-md"
-          />
+          <Image image={image} key={index} handleDelete={handleDelete} />
         ))}
       </div>
     </div>

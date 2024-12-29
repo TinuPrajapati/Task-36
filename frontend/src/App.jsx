@@ -3,61 +3,75 @@ import Display from "./components/Display";
 import Form from "./components/Form";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function App() {
   const [images, setImages] = useState([]);
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("image", file); // Make sure this key matches the one in multer
-
+    setLoading(true)
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_APP_Backend_url}/upload`,
-        formData,
+        `${import.meta.env.VITE_APP_Backend_url}/image/upload`,
+        {
+          image: file
+        },
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            
-          },
-          withCredentials:true
+          }
         }
       );
-      if(response.data === 0) return alert("unable to send data")
-      alert(response.data.message);
-      window.location.reload(false)
+      if (response.data === 0) return alert("unable to send data")
+      toast.success(response.data);
+      getData();
     } catch (err) {
       console.log(err)
+    } finally {
+      setLoading(false)
     }
   };
 
-  useEffect(() => {
+  async function getData() {
+    setLoading(true)
     try {
-      async function getData() {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_Backend_url}/show`,{
-            withCredentials:true
-          }
-        );
-        setImages(response.data);
-      }
-      getData();
+      const response = await axios.get(`${import.meta.env.VITE_APP_Backend_url}/image`);
+      setImages(response.data);
     } catch (err) {
       alert(err);
+    } finally {
+      setLoading(false)
     }
+  }
+
+  const handleDelete = async (id) => {
+    setLoading(true);
+    try {
+      const response = await axios.delete(`${import.meta.env.VITE_APP_Backend_url}/image/delete/${id}`);
+      toast.success(response.data)
+      getData()
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    getData();
   }, []);
 
   return (
-    <>
-      <div
-        className="w-[100vw] h-[100vh] bg-cover p-10 flex gap-4"
-        style={{ backgroundImage: `url(${bgImage})` }}
-      >
-        <Form handleSubmit={handleSubmit} setFile={setFile} />
-        <Display images={images} />
-      </div>
-    </>
+    <div
+      className="w-[100vw] min-h-screen bg-cover flex flex-col items-center gap-4 font-Nuntio p-2 lg:flex-row lg:p-10 overflow-y-auto lg:items-start lg:h-[100vh]"
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      <Form handleSubmit={handleSubmit} setFile={setFile} loading={loading} />
+      <Display images={images} handleDelete={handleDelete} loading={loading} />
+      <ToastContainer />
+    </div>
   );
 }

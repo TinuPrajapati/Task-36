@@ -1,22 +1,12 @@
-import "dotenv/config";
-import express from "express";
-import mongoose from "mongoose";
-import multer from "multer";
-import cors from "cors";
-import { storage } from "./cloudinaryconfig.js";
-import Image from "./models/imageModel.js";
+require("dotenv").config();
 
-const upload = multer({ storage})
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const router = require("./Routes/router");
 const app = express();
 
-app.use(cors({
-  origin: 'https://task-36-frontend.vercel.app',
-  methods: ["GET", "POST"],
-  credentials:true,
-  allowedHeaders: "Content-Type,Authorization,multipart/form-data",
-}));
-
-// Use the body-parsers *after* multer to avoid interference with form-data
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -38,32 +28,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-// File Upload Route
-app.post("/upload", upload.single("image"), (req, res) => {
-  try{
-    const {path} =req.file
-  if (!req.file) {
-    return res.status(400).json({ message: "No Image Provided" });
-  }
-  const data = new Image({
-    url:path
-  });
-  data.save();  
-  res.json({ message: "File uploaded successfully" });
-  }catch(err){
-    res.json(0)
-  }
-});
-
-app.get("/show",async (req,res)=>{
-  const data = await Image.find({});
-  res.status(200).json(data)
-})
-
-// Error handling middleware
-app.use((req, res, next) => {
-  res.status(404).send({ message: "Route not found" });
-});
+app.use("/image",router)
 
 // Start server
 const port = 8080;

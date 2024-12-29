@@ -1,6 +1,5 @@
-import { v2 as cloudinary } from 'cloudinary';
-import { CloudinaryStorage } from "multer-storage-cloudinary";
-
+const { CloudinaryStorage } = require('@fluidjs/multer-cloudinary');
+const { v2: cloudinary } = require('cloudinary');
 
 cloudinary.config({
   cloud_name: "dthfgonlq",
@@ -11,13 +10,9 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "Task-36-imageUpload",
+    folder: "Image-Uploader",
     allowedFromat: ["png", "jpg", "jpeg"],
   },
 });
 
-
-export {
-    storage,
-    cloudinary
-}
+module.exports ={storage,cloudinary}
